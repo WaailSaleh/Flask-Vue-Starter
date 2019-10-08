@@ -9,7 +9,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 deactivate
 source venv/bin/activate
-flask run --reload
+flask run --reload --host=0.0.0.0
 ```
 
 ## Starting VueJS Development Server
