@@ -10,8 +10,17 @@ def get_message():
     return jsonify({
         "message": "Flask + VueJS"
     })
-auth= {"Authorization" :"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2l3wRoxfQ.IUJTu87WjXRqjCMAj0zhhYvX2sFGAiU1g3YIxc3tt2I"}
+auth = {}
+token = None
+@app.route("/api/token")
+def get_token():
+    response = requests.post("http://localhost:6969/token", json={'user':'dev', 'pass':'secret'})
+    token = response.text
+    auth['Authorization'] = 'Bearer ' + token
+
 @app.route("/api/p1")
 def get_p1():
-    response = requests.get("http://localhost:5000/DataSecure", headers=auth)
-    return json.dumps(response.json()), 200
+    if token is None:
+        get_token()
+    response = requests.get("http://localhost:6969/DataSecure", headers=auth)
+    return response.text, 200
